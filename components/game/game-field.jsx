@@ -1,11 +1,14 @@
 import clsx from "clsx";
 import { UiButton } from "../uikit/ui-button";
 import { GameSymbol } from "./game-symbol";
-import { useGameState } from "./useGameState";
 
-export function GameField({ className, playersCount }) {
-  const { cells, currentMove, handleCellClick, nextMove } = useGameState(playersCount);
-
+export function GameField({
+  className,
+  cells,
+  currentMove,
+  nextMove,
+  handleCellClick,
+}) {
   const actions = (
     <div className="flex gap-3">
       <UiButton className="w-22" size="md" variant="primary">
