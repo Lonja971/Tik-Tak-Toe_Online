@@ -9,8 +9,8 @@ import { useState } from "react";
 import next from "next";
 
 export default function HomePage() {
-  const [playersCount] = useState(4);
-  const { cells, currentMove, handleCellClick, nextMove } =
+  const [playersCount] = useState(2);
+  const { cells, currentMove, handleCellClick, nextMove, winnerSequence } =
     useGameState(playersCount);
 
   return (
@@ -18,7 +18,11 @@ export default function HomePage() {
       <Header />
       <main className="pt-6 mx-auto w-max">
         <GameTitle playersCount={playersCount} />
-        <GameInfo playersCount={playersCount} className="mt-4" currentMove={currentMove}/>
+        <GameInfo
+          playersCount={playersCount}
+          className="mt-4"
+          currentMove={currentMove}
+        />
         <GameField
           playersCount={playersCount}
           className="mt-6"
@@ -26,6 +30,7 @@ export default function HomePage() {
           currentMove={currentMove}
           handleCellClick={handleCellClick}
           nextMove={nextMove}
+          winnerSequence={winnerSequence}
         />
       </main>
     </div>
