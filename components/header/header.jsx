@@ -13,7 +13,7 @@ export function Header() {
         Spel
       </UiButton>
       <button className="ml-auto flex items-center gap-2 text-teal-600">
-        <Profile />
+        <Profile name="Mr.Stinger" rating="1234" />
         <ArrowDownIcon />
       </button>
     </header>
