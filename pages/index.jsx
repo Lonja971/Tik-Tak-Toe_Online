@@ -8,6 +8,8 @@ import {
 import { useState } from "react";
 import next from "next";
 import { GameSymbol } from "../components/game/game-symbol";
+import { UiModal } from "../components/uikit/ui-modal";
+import { UiButton } from "../components/uikit/ui-button";
 
 export default function HomePage() {
   const [playersCount] = useState(4);
@@ -38,6 +40,16 @@ export default function HomePage() {
             <GameSymbol symbol={winnerSymbol} />
           </div>
         )}
+        <UiModal width="md" isOpen={winnerSymbol} onClose={() => console.log('close')}>
+          <UiModal.Header>Spel is over!</UiModal.Header>
+          <UiModal.Body>
+            <div className="text-sm">Winnaar: <span className="text-teal-600">Mr.Stinger</span></div>
+          </UiModal.Body>
+          <UiModal.Footer>
+            <UiButton size="md" variant="outline">Terug</UiButton>
+            <UiButton size="md" variant="primary">Speel opnieuw</UiButton>
+          </UiModal.Footer>
+        </UiModal>
         <GameField
           playersCount={playersCount}
           className="mt-6"

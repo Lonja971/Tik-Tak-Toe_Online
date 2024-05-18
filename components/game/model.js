@@ -16,7 +16,6 @@ export function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
     let result = true;
 
     for (let i = 1; i < indexes.length; i++) {
-      // Починаємо з 1, щоб уникнути порівняння з індексом -1
       result = result && !!cells[indexes[i]];
       result = result && cells[indexes[i]] === cells[indexes[i - 1]];
     }
@@ -31,17 +30,21 @@ export function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
       [], //   /
       [], //   |
     ];
-    for (let j = 0; j < sequenceSize; j++) {
-      res[0].push(j - gap + i);
-      res[1].push(fieldSize * (j - gap) + (j - gap) + i);
-      res[2].push(-fieldSize * (j - gap) + (j - gap) + i);
-      res[3].push(fieldSize * (j - gap) + i);
+    const x = i % fieldSize;
+    const y = Math.floor(i / fieldSize);
 
-      const x = i % fieldSize;
-      if (x < gap || x >= fieldSize - gap) {
-        res.shift();
-        res.shift();
-        res.shift();
+    for (let j = 0; j < sequenceSize; j++) {
+      const offset = j - gap;
+
+      if (x >= gap && x < fieldSize - gap) {
+        res[0].push(i + offset); //   -
+      }
+      if (x >= gap && x < fieldSize - gap && y >= gap && y < fieldSize - gap) {
+        res[1].push(i + offset * (fieldSize + 1)); //   \
+        res[2].push(i + offset * (fieldSize - 1)); //   /
+      }
+      if (y >= gap && y < fieldSize - gap) {
+        res[3].push(i + offset * fieldSize); //   |
       }
     }
 
@@ -51,7 +54,7 @@ export function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
   for (let i = 0; i < cells.length; i++) {
     if (cells[i]) {
       const indexRows = getSequenceIndexes(i);
-      const winnerIndexes = indexRows.find((row) => compareElements(row));
+      const winnerIndexes = indexRows.find((row) => row.length === sequenceSize && compareElements(row));
       if (winnerIndexes) {
         return winnerIndexes;
       }
