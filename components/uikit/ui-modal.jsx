@@ -12,19 +12,24 @@ import { createPortal } from "react-dom";
  * @returns
  */
 
-export function UiModal({ width = "md", className, children, isOpen=false, onClose }) {
+export function UiModal({
+  width = "md",
+  className,
+  children,
+  isOpen = false,
+  onClose,
+}) {
+  const handleClick = (e) => {
+    const isModal = e.target.closest("[data-id=modal]");
+    if (isModal) return;
+    onClose();
+  };
 
-   const handleClick = (e) => {
-      const isModal = e.target.closest('[data-id=modal]')
-      if (isModal) return;
-      onClose();
-   }
+  if (!isOpen) {
+    return null;
+  }
 
-   if(!isOpen){
-      return null;
-   }
-
-   const modal = (
+  const modal = (
     <div
       onClick={handleClick}
       className={clsx(
@@ -33,17 +38,21 @@ export function UiModal({ width = "md", className, children, isOpen=false, onClo
       )}
     >
       <div
-         data-id="modal"
+        data-id="modal"
         className={clsx(
           "bg-white rounded-lg min-h-[320px] mx-auto relative",
-          "flex flex-col"
-         ,{
+          "flex flex-col",
+          {
             md: "max-w-[640px] w-full",
             full: "mx-5",
           }[width],
         )}
       >
-        <button data-id="modal" onClick={onClose} className="w-8 h-8 flex items-center justify-center bg-white/10 absolute top-0 right-[-44px] rounded-[4px] hover:bg-white/40 transition-colors">
+        <button
+          data-id="modal"
+          onClick={onClose}
+          className="w-8 h-8 flex items-center justify-center bg-white/10 absolute top-0 right-[-44px] rounded-[4px] hover:bg-white/40 transition-colors"
+        >
           <CrossLightIcon className="w-4 h-4 text-white" />
         </button>
         {children}
@@ -51,17 +60,23 @@ export function UiModal({ width = "md", className, children, isOpen=false, onClo
     </div>
   );
 
-  return createPortal(modal, document.getElementById('modals'))
+  return createPortal(modal, document.getElementById("modals"));
 }
 
 UiModal.Header = function UiModalHeader({ children, className }) {
-  return <div className={clsx(className, "mx-6 pt-6 pb-4 text-2xl")}>{children}</div>;
+  return (
+    <div className={clsx(className, "mx-6 pt-6 pb-4 text-2xl")}>{children}</div>
+  );
 };
 UiModal.Body = function UiModalBody({ children, className }) {
   return <div className={clsx(className, "px-6")}>{children}</div>;
 };
 UiModal.Footer = function UiModalFooter({ children, className }) {
-  return <div className={clsx(className, "p-6 flex gap-4 justify-end mt-auto")}>{children}</div>;
+  return (
+    <div className={clsx(className, "p-6 flex gap-4 justify-end mt-auto")}>
+      {children}
+    </div>
+  );
 };
 
 function CrossLightIcon({ className }) {

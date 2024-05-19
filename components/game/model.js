@@ -54,7 +54,9 @@ export function computeWinner(cells, sequenceSize = 5, fieldSize = 19) {
   for (let i = 0; i < cells.length; i++) {
     if (cells[i]) {
       const indexRows = getSequenceIndexes(i);
-      const winnerIndexes = indexRows.find((row) => row.length === sequenceSize && compareElements(row));
+      const winnerIndexes = indexRows.find(
+        (row) => row.length === sequenceSize && compareElements(row),
+      );
       if (winnerIndexes) {
         return winnerIndexes;
       }
