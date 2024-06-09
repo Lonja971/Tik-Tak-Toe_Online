@@ -1,8 +1,43 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { GAME_SYMBOLS } from "./constants";
-import { computeWinner, getNextMove } from "./model";
+import { getNextMove } from "../game-new/model/get-next-move";
+import { computeWinner } from "../game-new/model/compute-winner";
+
+export const GAME_STATE_ACTIONS = {
+  CELL_CLICK: "cell-click",
+};
+
+const gameStateReduser = (state, action) => {
+  console.log(action);
+  return state;
+};
+
+const initGameState = ({}) => ({
+  cells: new Array(19 * 19).fill(null),
+  currentMove: GAME_SYMBOLS.CROSS,
+});
 
 export function useGameState(playersCount) {
+  const [gameState, dispatch] = useReducer(gameStateReducer, {}, initGameState);
+
+  const winnerSequence = computeWinner(gameState.cells);
+  const nextMove = getNextMove(gameState.currentMove, playersCount);
+  const winnerSymbol =
+    nextMove === gameState.currentMove
+      ? gameState.currentMove
+      : gameState.cells[winnerSequence?.[0]];
+
+  return {
+    cells: gameState.cells,
+    currentMove: gameState.currentMove,
+    nextMove,
+    winnerSequence,
+    winnerSymbol,
+    dispatch,
+  };
+}
+
+/*
   const [{ cells, currentMove, playersTimeOver }, setGameState] = useState(
     () => ({
       cells: new Array(19 * 19).fill(null),
@@ -50,14 +85,4 @@ export function useGameState(playersCount) {
       };
     });
   };
-
-  return {
-    cells,
-    currentMove,
-    nextMove,
-    handleCellClick,
-    handlePlayerTimeOver,
-    winnerSequence,
-    winnerSymbol,
-  };
-}
+  */
